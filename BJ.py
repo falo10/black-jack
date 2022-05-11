@@ -1,7 +1,14 @@
 from random import *
 from collections import *
 
+""" the goal of the game is to get the number of points as close as possible to 21
+punctation: 
+1. Cards from two to ten have a value equal to the number of the card
+2. The Jack, Queen and King are worth 10 points
+3. The ace is worth 1 or 11, whichever is better for the player.
 
+
+"""
 
 cardList = ["2 hearts", "2 diamonds", "2 spades", "2 clubs",
             "3 hearts", "3 diamonds", "3 spades", "3 clubs",
@@ -22,14 +29,22 @@ cardList = ["2 hearts", "2 diamonds", "2 spades", "2 clubs",
 shuffle(cardList)
 print (cardList)
 
+"""playerCards = []
+selectedCard=cardList.pop()
+playerCards.append(selectedCard)
+print (playerCards)
+"""
 
-def rozdanie (lista):
-    playerCards = []
-    for cards in range (5):
-        selectedCard=lista.pop()
-        playerCards.append(selectedCard)
-    return playerCards
+def firstDeal (deck):
+    selectedCard=deck.pop()
+    return selectedCard
 
+playerCards = []
+croupierCards = []
 
-reka1 = rozdanie(cardList)
-reka2 = rozdanie(cardList)
+for deal in range (2):
+    playerCards.append(firstDeal(cardList))
+    croupierCards.append(firstDeal(cardList))
+
+print(playerCards)
+print(croupierCards)
