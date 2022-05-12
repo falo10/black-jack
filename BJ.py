@@ -25,7 +25,20 @@ cardList = ["2 hearts", "2 diamonds", "2 spades", "2 clubs",
             "Ace hearts", "Ace diamonds", "Ace spades", "Ace clubs",
             ]
 
-
+cardPoints = {"2 hearts":2, "2 diamonds":2, "2 spades":2, "2 clubs":2,
+            "3 hearts":3, "3 diamonds":3, "3 spades":3, "3 clubs":3,
+            "4 hearts":4, "4 diamonds":4, "4 spades":4, "4 clubs":4,
+            "5 hearts":5, "5 diamonds":5, "5 spades":5, "5 clubs":5,
+            "6 hearts":6, "6 diamonds":6, "6 spades":6, "6 clubs":6,
+            "7 hearts":7, "7 diamonds":7, "7 spades":7, "7 clubs":7,
+            "8 hearts":8, "8 diamonds":8, "8 spades":8, "8 clubs":8,
+            "9 hearts":9, "9 diamonds":9, "9 spades":9, "9 clubs":9,
+            "10 hearts":10, "10 diamonds":10, "10 spades":10, "10 clubs":10,
+            "Jack hearts":11, "Jack diamonds":11, "Jack spades":11, "Jack clubs":11,
+            "Queen hearts":11, "Queen diamonds":11, "Queen spades":11, "Queen clubs":11,
+            "King hearts":11, "King diamonds":11, "King spades":11, "King clubs":11,
+            "Ace hearts":11, "Ace diamonds":11, "Ace spades":11, "Ace clubs":11}
+            
 shuffle(cardList)
 print (cardList)
 
@@ -47,4 +60,4 @@ for deal in range (2):
     croupierCards.append(firstDeal(cardList))
 
 print(playerCards)
-print(croupierCards)
+print(croupierCards[0])
