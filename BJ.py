@@ -34,8 +34,8 @@ cardPoints = {"2 hearts":2, "2 diamonds":2, "2 spades":2, "2 clubs":2,
             "8 hearts":8, "8 diamonds":8, "8 spades":8, "8 clubs":8,
             "9 hearts":9, "9 diamonds":9, "9 spades":9, "9 clubs":9,
             "10 hearts":10, "10 diamonds":10, "10 spades":10, "10 clubs":10,
-            "Jack hearts":10, "Jack diamonds":10, "Jack spades":10, "Jack clubs":10,
-            "Queen hearts":10, "Queen diamonds":10, "Queen spades":10, "Queen clubs":10,
+            "Jack hearts":10, "Jack diamonds":10, "Jack spades":10, "Jack clubs":11,
+            "Queen hearts":10, "Queen diamonds":10, "Queen spades":10, "Queen clubs":11,
             "King hearts":10, "King diamonds":10, "King spades":10, "King clubs":10,
             "Ace hearts":11, "Ace diamonds":11, "Ace spades":11, "Ace clubs":11}
             
