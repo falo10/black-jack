@@ -71,12 +71,12 @@ for deal in range (2):
     croupierCards.append(first_deal(cardList))
 
 print(playerCards)
-print(croupierCards)
+print(croupierCards[0])
 
 give_number_of_points (playerCards, playerPoints)
 give_number_of_points (croupierCards, croupierPoints)
 
-print (playerPoints)
-print (croupierPoints)
+print (sum(playerPoints))
+print (sum(croupierPoints))
 
 
