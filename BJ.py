@@ -34,9 +34,9 @@ cardPoints = {"2 hearts":2, "2 diamonds":2, "2 spades":2, "2 clubs":2,
             "8 hearts":8, "8 diamonds":8, "8 spades":8, "8 clubs":8,
             "9 hearts":9, "9 diamonds":9, "9 spades":9, "9 clubs":9,
             "10 hearts":10, "10 diamonds":10, "10 spades":10, "10 clubs":10,
-            "Jack hearts":11, "Jack diamonds":11, "Jack spades":11, "Jack clubs":11,
-            "Queen hearts":11, "Queen diamonds":11, "Queen spades":11, "Queen clubs":11,
-            "King hearts":11, "King diamonds":11, "King spades":11, "King clubs":11,
+            "Jack hearts":10, "Jack diamonds":10, "Jack spades":10, "Jack clubs":10,
+            "Queen hearts":10, "Queen diamonds":10, "Queen spades":10, "Queen clubs":10,
+            "King hearts":10, "King diamonds":10, "King spades":10, "King clubs":10,
             "Ace hearts":11, "Ace diamonds":11, "Ace spades":11, "Ace clubs":11}
             
 shuffle(cardList)
@@ -48,16 +48,29 @@ playerCards.append(selectedCard)
 print (playerCards)
 """
 
-def firstDeal (deck):
+def first_deal (deck):
     selectedCard=deck.pop()
     return selectedCard
 
-playerCards = []
+
+playerCards= []
 croupierCards = []
+playerPoints =[]
+croupierPoints=[]
 
 for deal in range (2):
-    playerCards.append(firstDeal(cardList))
-    croupierCards.append(firstDeal(cardList))
+    playerCards.append(first_deal(cardList))
+    croupierCards.append(first_deal(cardList))
 
 print(playerCards)
-print(croupierCards[0])
+
+cardPointsToUse = cardPoints.items()
+  
+
+for card in playerCards:
+    for cards, punctuation in cardPointsToUse:
+        if (card == cards):
+            print (punctuation)
+
+
+"""print(croupierCards[0])"""
