@@ -60,6 +60,8 @@ croupierCards = []
 playerPoints =[]
 croupierPoints=[]
 cardPointsToUse = cardPoints.items()
+newCard=[]        
+newCardPoints =[]
 
 #START OF THE GAME
 
@@ -73,10 +75,30 @@ for deal in range (2):
 print(playerCards)
 print(croupierCards[0])
 
-give_number_of_points (playerCards, playerPoints)
-give_number_of_points (croupierCards, croupierPoints)
+sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
+print (sumOfPlayerPoints)
 
-print (sum(playerPoints))
-print (sum(croupierPoints))
+
+while True:
+    choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What you want to do next? Write:
+    hit - if you want another card
+    stand - if you don't want another card  """)
+    if (choice == 'hit'):
+        newCard.append(first_deal(cardList))
+        print (f"Your new card is {newCard}")
+        newCardPoints = give_number_of_points(newCard, newCardPoints)
+        newCardPoints = sum(newCardPoints)  # need int to add to our points
+        playerCards.extend(newCard)
+        sumOfPlayerPoints += newCardPoints
+        newCardPoints = []
+        newCard.clear()
+    elif (choice == 'stand'):
+        break
+    else:
+        print("""Invalid command! Try again! Write:
+    hit - if you want another card
+    stand - if you don't want another card
+        """)
+
 
 
