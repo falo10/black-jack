@@ -7,6 +7,12 @@ punctation:
 2. The Jack, Queen and King are worth 10 points
 3. The ace is worth 1 or 11, whichever is better for the player.
 
+Start of a game:
+
+Plasyer option:
+
+hit - if you want another card to gain a number of points as close as possible to 21
+stand - if you don't want another card 
 
 """
 
@@ -83,7 +89,7 @@ while True:
     choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What you want to do next? Write:
     hit - if you want another card
     stand - if you don't want another card  """)
-    if (choice == 'hit'):
+    if (choice.upper() == 'HIT'):
         newCard.append(first_deal(cardList))
         print (f"Your new card is {newCard}")
         newCardPoints = give_number_of_points(newCard, newCardPoints)
@@ -92,7 +98,7 @@ while True:
         sumOfPlayerPoints += newCardPoints
         newCardPoints = []
         newCard.clear()
-    elif (choice == 'stand'):
+    elif (choice.upper() == 'STAND'):
         break
     else:
         print("""Invalid command! Try again! Write:
