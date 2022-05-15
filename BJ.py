@@ -9,10 +9,18 @@ punctation:
 
 Start of a game:
 
-Plasyer option:
+Player options:
 
 hit - if you want another card to gain a number of points as close as possible to 21
 stand - if you don't want another card 
+
+Dealer options:
+The dealer's rules of play are predetermined!
+If the amount of his points is under 17 he has to hit next card.
+If the number of points is equal to 17 or more, then he has to stand.
+
+
+Results:
 
 """
 
@@ -78,15 +86,14 @@ for deal in range (2):
     playerCards.append(first_deal(cardList))
     dealerCards.append(first_deal(cardList))
 
-print(playerCards)
-print(dealerCards[0])
+print(f"Your cards are: {playerCards}")
+print(f" First dealer card is: {dealerCards[0]}")
 
 sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
-print (sumOfPlayerPoints)
 sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
 
 while True:
-    choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What you want to do next? Write:
+    choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What do you want to do next? Write:
     hit - if you want another card
     stand - if you don't want another card  """)
     if (choice.upper() == 'HIT'):
@@ -107,7 +114,9 @@ while True:
         """)
 
 
+
 if (sumOfPlayerPoints <= 21):
+    print (f"The dealer's cards are: {dealerCards} and the number of his points is {sumOfDealerPoints}")
     while True:
         if (sumOfDealerPoints < 17):
             newCard.append(first_deal(cardList))
@@ -118,9 +127,15 @@ if (sumOfPlayerPoints <= 21):
             sumOfDealerPoints += newCardPoints
             newCardPoints = []
             newCard.clear()
-            print (sumOfDealerPoints)
-            print (dealerCards)
+            print (f"Now, the dealer's cards are: {dealerCards} and the number of his points is {sumOfDealerPoints}")
         else:
             break
+    if (sumOfDealerPoints > 21):
+        print ('Congratulations, you managed to win!')
+    elif (sumOfDealerPoints < sumOfPlayerPoints):
+        print ('Congratulations, you managed to win!')
+    elif (sumOfDealerPoints > sumOfPlayerPoints):
+        print ('You lost! Try next time!')
 else:
     print ('You lost! Try next time!')
+            
