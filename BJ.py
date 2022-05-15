@@ -80,7 +80,6 @@ newCardPoints =[]
 #START OF THE GAME
 
 shuffle(cardList)
-print (cardList)
 
 for deal in range (2):
     playerCards.append(first_deal(cardList))
@@ -91,6 +90,18 @@ print(f"First dealer card is: {dealerCards[0]}")
 
 sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
 sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
+
+#CHECK IF PLAYER CAN SPLIT
+
+firstCard = [playerCards[0]]
+secondCard = [playerCards[1]]
+
+firstCardPunctation = sum((give_number_of_points(firstCard, [])))
+secondCardPunctation = sum(((give_number_of_points(secondCard, []))))
+
+if (firstCardPunctation < 10):
+    if (firstCardPunctation == secondCardPunctation):
+        decisionToSplit = input ('Do u want to split?')
 
 while True:
     if (sumOfPlayerPoints == 21):
