@@ -87,31 +87,42 @@ for deal in range (2):
     dealerCards.append(first_deal(cardList))
 
 print(f"Your cards are: {playerCards}")
-print(f" First dealer card is: {dealerCards[0]}")
+print(f"First dealer card is: {dealerCards[0]}")
 
 sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
 sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
 
 while True:
-    choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What do you want to do next? Write:
-    hit - if you want another card
-    stand - if you don't want another card  """)
-    if (choice.upper() == 'HIT'):
-        newCard.append(first_deal(cardList))
-        print (f"Your new card is {newCard}")
-        newCardPoints = give_number_of_points(newCard, newCardPoints)
-        newCardPoints = sum(newCardPoints)  # need int to add to our points
-        playerCards.extend(newCard)
-        sumOfPlayerPoints += newCardPoints
-        newCardPoints = []
-        newCard.clear()
-    elif (choice.upper() == 'STAND'):
+    if (sumOfPlayerPoints == 21):
+        print ('BLACKJACK! - your total points are 21. Now let\'s check the dealers cards!')
         break
     else:
-        print("""Invalid command! Try again! Write:
-    hit - if you want another card
-    stand - if you don't want another card
-        """)
+        choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What do you want to do next? Write:
+        hit - if you want another card
+        stand - if you don't want another card  """)
+        if (choice.upper() == 'HIT'):
+            newCard.append(first_deal(cardList))
+            print (f"Your new card is {newCard}")
+            newCardPoints = give_number_of_points(newCard, newCardPoints)
+            newCardPoints = sum(newCardPoints)  # need int to add to our points
+            playerCards.extend(newCard)
+            sumOfPlayerPoints += newCardPoints
+            newCardPoints = []
+            newCard.clear()
+            if (sumOfPlayerPoints == 21):
+                print ('BLACKJACK! - your total points are 21. Now let\'s check the dealers cards!')
+                break
+            elif (sumOfPlayerPoints > 21):
+                print (f"Number of your points are: {sumOfPlayerPoints}!")
+                print ('You lost! Try next time!')
+                break
+        elif (choice.upper() == 'STAND'):
+            break
+        else:
+            print("""Invalid command! Try again! Write:
+                hit - if you want another card
+                stand - if you don't want another card
+            """)
 
 
 
@@ -136,6 +147,4 @@ if (sumOfPlayerPoints <= 21):
         print ('Congratulations, you managed to win!')
     elif (sumOfDealerPoints > sumOfPlayerPoints):
         print ('You lost! Try next time!')
-else:
-    print ('You lost! Try next time!')
             
