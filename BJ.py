@@ -62,9 +62,9 @@ def give_number_of_points (cardsHeld, pointsOwned):
 
 
 playerCards= []
-croupierCards = []
+dealerCards = []
 playerPoints =[]
-croupierPoints=[]
+dealerPoints=[]
 cardPointsToUse = cardPoints.items()
 newCard=[]        
 newCardPoints =[]
@@ -76,14 +76,14 @@ print (cardList)
 
 for deal in range (2):
     playerCards.append(first_deal(cardList))
-    croupierCards.append(first_deal(cardList))
+    dealerCards.append(first_deal(cardList))
 
 print(playerCards)
-print(croupierCards[0])
+print(dealerCards[0])
 
 sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
 print (sumOfPlayerPoints)
-
+sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
 
 while True:
     choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What you want to do next? Write:
@@ -107,4 +107,20 @@ while True:
         """)
 
 
-
+if (sumOfPlayerPoints <= 21):
+    while True:
+        if (sumOfDealerPoints < 17):
+            newCard.append(first_deal(cardList))
+            print (f"The dealer's next card is {newCard}")
+            newCardPoints = give_number_of_points(newCard, newCardPoints)
+            newCardPoints = sum(newCardPoints)  
+            dealerCards.extend(newCard)
+            sumOfDealerPoints += newCardPoints
+            newCardPoints = []
+            newCard.clear()
+            print (sumOfDealerPoints)
+            print (dealerCards)
+        else:
+            break
+else:
+    print ('You lost! Try next time!')
