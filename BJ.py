@@ -96,12 +96,21 @@ sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
 firstCard = [playerCards[0]]
 secondCard = [playerCards[1]]
 
-firstCardPunctation = sum((give_number_of_points(firstCard, [])))
+firstCardPunctation = sum(((give_number_of_points(firstCard, []))))
 secondCardPunctation = sum(((give_number_of_points(secondCard, []))))
 
 if (firstCardPunctation < 10):
     if (firstCardPunctation == secondCardPunctation):
-        decisionToSplit = input ('Do u want to split?')
+        decisionToSplit = input ('Do you want to split? ')
+elif (firstCardPunctation == 10):       #many cards has value of 10 (check if the player has same card but diffrent colour to splt) 
+    if ("10" in firstCard[0] and "10" in secondCard[0]):
+        decisionToSplit = input ('Do you want to split? ')
+    elif ("Jack" in firstCard[0] and "Jack" in secondCard[0]):
+        decisionToSplit = input ('Do you want to split? ')
+    elif ("Queen" in firstCard[0] and "Queen" in secondCard[0]):
+        decisionToSplit = input ('Do you want to split? ')
+    elif ("King" in firstCard[0] and "King" in secondCard[0]):
+        decisionToSplit = input ('Do you want to split? ')
 
 while True:
     if (sumOfPlayerPoints == 21):
