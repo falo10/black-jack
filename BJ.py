@@ -66,7 +66,40 @@ def give_number_of_points (cardsHeld, pointsOwned):
         for cards, punctuation in cardPointsToUse:
             if (card == cards):
                 pointsOwned.append(punctuation)
-    return (pointsOwned)            
+    return (pointsOwned)
+
+def play_black_jack (sumOfPoints, cards, newCardPoints):
+    while True:
+        if (sumOfPoints == 21):
+            print ('BLACKJACK! - your total points are 21. Now let\'s check the dealers cards!')
+            return sumOfPoints
+        else:
+            choice = input(f"""Your number of points is: {sumOfPoints}. What do you want to do next? Write:
+            hit - if you want another card
+            stand - if you don't want another card  """)
+            if (choice.upper() == 'HIT'):
+                newCard.append(first_deal(cardList))
+                print (f"Your new card is {newCard}")
+                newCardPoints = give_number_of_points(newCard, newCardPoints)
+                newCardPoints = sum(newCardPoints)  # need int to add to our points
+                cards.extend(newCard)
+                sumOfPoints += newCardPoints
+                newCardPoints = []
+                newCard.clear()
+                if (sumOfPoints == 21):
+                    print ('BLACKJACK! - your total points are 21. Now let\'s check the dealers cards!')
+                    return sumOfPoints
+                elif (sumOfPoints > 21):
+                    print (f"Number of your points are: {sumOfPoints}!")
+                    print ('You lost! Try next time!')
+                    return (sumOfPoints)
+            elif (choice.upper() == 'STAND'):
+                return (sumOfPoints)
+            else:
+                print("""Invalid command! Try again! Write:
+                    hit - if you want another card
+                    stand - if you don't want another card
+                """)
 
 
 playerCards= []
@@ -76,6 +109,8 @@ dealerPoints=[]
 cardPointsToUse = cardPoints.items()
 newCard=[]        
 newCardPoints =[]
+newDealersCard=[]        
+newDealersCardPoints =[]
 
 #START OF THE GAME
 
@@ -112,59 +147,32 @@ elif (firstCardPunctation == 10):       #many cards has value of 10 (check if th
     elif ("King" in firstCard[0] and "King" in secondCard[0]):
         decisionToSplit = input ('Do you want to split? ')
 
-while True:
-    if (sumOfPlayerPoints == 21):
-        print ('BLACKJACK! - your total points are 21. Now let\'s check the dealers cards!')
-        break
-    else:
-        choice = input(f"""Your number of points is: {sumOfPlayerPoints}. What do you want to do next? Write:
-        hit - if you want another card
-        stand - if you don't want another card  """)
-        if (choice.upper() == 'HIT'):
-            newCard.append(first_deal(cardList))
-            print (f"Your new card is {newCard}")
-            newCardPoints = give_number_of_points(newCard, newCardPoints)
-            newCardPoints = sum(newCardPoints)  # need int to add to our points
-            playerCards.extend(newCard)
-            sumOfPlayerPoints += newCardPoints
-            newCardPoints = []
-            newCard.clear()
-            if (sumOfPlayerPoints == 21):
-                print ('BLACKJACK! - your total points are 21. Now let\'s check the dealers cards!')
-                break
-            elif (sumOfPlayerPoints > 21):
-                print (f"Number of your points are: {sumOfPlayerPoints}!")
-                print ('You lost! Try next time!')
-                break
-        elif (choice.upper() == 'STAND'):
-            break
-        else:
-            print("""Invalid command! Try again! Write:
-                hit - if you want another card
-                stand - if you don't want another card
-            """)
+# END OF CHECK
+
+pointsScored = play_black_jack(sumOfPlayerPoints, playerCards, newCardPoints)
 
 
-
-if (sumOfPlayerPoints <= 21):
+if (pointsScored <= 21):
     print (f"The dealer's cards are: {dealerCards} and the number of his points is {sumOfDealerPoints}")
     while True:
         if (sumOfDealerPoints < 17):
-            newCard.append(first_deal(cardList))
-            print (f"The dealer's next card is {newCard}")
-            newCardPoints = give_number_of_points(newCard, newCardPoints)
-            newCardPoints = sum(newCardPoints)  
-            dealerCards.extend(newCard)
-            sumOfDealerPoints += newCardPoints
-            newCardPoints = []
-            newCard.clear()
+            newDealersCard.append(first_deal(cardList))
+            print (f"The dealer's next card is {newDealersCard}")
+            newDealersCardPoints = give_number_of_points(newDealersCard, newDealersCardPoints)
+            newDealersCardPoints = sum(newDealersCardPoints)  
+            dealerCards.extend(newDealersCard)
+            sumOfDealerPoints += newDealersCardPoints
+            newDealersCardPoints = []
+            newDealersCard.clear()
             print (f"Now, the dealer's cards are: {dealerCards} and the number of his points is {sumOfDealerPoints}")
         else:
             break
     if (sumOfDealerPoints > 21):
         print ('Congratulations, you managed to win!')
-    elif (sumOfDealerPoints < sumOfPlayerPoints):
+    elif (sumOfDealerPoints < pointsScored):
         print ('Congratulations, you managed to win!')
-    elif (sumOfDealerPoints > sumOfPlayerPoints):
+    elif (sumOfDealerPoints > pointsScored):
         print ('You lost! Try next time!')
+    elif (sumOfDealerPoints == pointsScored):
+        print ('It is a draw!')
             
