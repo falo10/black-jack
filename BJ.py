@@ -271,18 +271,28 @@ else:
 
     #INSURANCE
     firstDealerCard = [dealerCards[0]]
-    firstDealerCardPunctation = sum((give_number_of_points(firstCard, [])))
+    firstDealerCardPunctation = sum((give_number_of_points(firstDealerCard, [])))
     if (firstDealerCardPunctation == 11):
-        print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
-        decisionToInsurance = input ("If u want to, write: yes: ")
-        if (decisionToInsurance.upper() == 'YES'):
-            print ('here we took 1/2 of your bet')   # insurance kaska
+        if (sumOfPlayerPoints == 21 and len(playerCards) == 2):
+            decisionToInsurance = 'no'
+        else:
+            print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
+            decisionToInsurance = input ("If u want to, write: yes: ")
+            if (decisionToInsurance.upper() == 'YES'):
+                print ('here we took another 1/2 of your bet')   # insurance kaska
+    else:
+        decisionToInsurance = 'no'
 
     #dealer's turn when split
     if (pointsScored <= 21):
         print('Now let\'s check the dealers cards!')
     make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
 
+    # INSURANCE  CHECK
+    if (decisionToInsurance.upper() == 'YES'):
+        if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
+            print ('INSURANCE ACTIVE')
+    
     
 
     
