@@ -1,18 +1,44 @@
 from random import *
 from collections import *
 
-""" the goal of the game is to get the number of points as close as possible to 21
-punctation: 
+""" Object of the game is to get the number of points as close as possible to 21.
+
+BLACKJACK is only when a plyer or dealer has 21 points inthe first two cards.
+
+If you will receievd 21 points in 3 or more cards IT IS NOT BLACKJACK!
+
+BLACKJACK always win with 21 pts in 3 or more cards!!!!
+
+Punctation: 
 1. Cards from two to ten have a value equal to the number of the card
 2. The Jack, Queen and King are worth 10 points
 3. The ace is worth 1 or 11, whichever is better for the player.
 
 Start of a game:
+The dealer starts the game by giving two cards. The dealer's
+hand always has one card face-up and a card face-down.
 
 Player options:
+Hit - if you want another card to gain a number of points as close as possible to 21,
 
-hit - if you want another card to gain a number of points as close as possible to 21
-stand - if you don't want another card 
+Stand - if you don't want another card,
+
+Split - if you are dealt two cards with equal value(only allow splitting of ten-value cards if they’re the same rank,
+for example: splitting a 10-10 hand is fine, but not a jack-queen hand), you may “split” them into two separate hands.
+You are now playing two hands and must match your initial wager for the new, second hand!
+The two hands must be played separately completing the first hand before going on to the second.
+
+Doubling Down- You may increase your bet by “doubling down.” After receiving your first two cards,
+you may “double down” by increasing your bet up to the amount of your original bet,
+receiving only one additional card. You may “double down” on any two cards except
+for a natural Blackjack. You can also “double down” after “splitting” a pair.
+
+Insurance - If, during the course of play, the dealer's face-up card is an ace, the player may assume
+that the second (down) card is worth 10 points and the dealer has blackjack. Then player can play insurance.
+Player has to pay for insurance 1/2 of bet amount.
+If the dealer has a Blackjack you lose your original bet, but you are paid 2 to 1 on your insurance.
+If the dealer doesn’t have a Blackjack, your original bet remains in play and only the insurance bet loses.
+
 
 Dealer options:
 The dealer's rules of play are predetermined!
@@ -85,13 +111,15 @@ def play_black_jack (sumOfPoints, cards, newCardPoints):
                 print (f"Your new card is {newCard}")
                 newCardPoints = give_number_of_points(newCard, newCardPoints)
                 newCardPointsToAdd = sum(newCardPoints)  # need int to add to our points
-                cards.extend(newCard)
+                cards.extend(newCard)    
+                if (decisionToSplit.upper() == 'YES' and len(cards) == 2):  #DOUBLE DOWN FOR SPLIT
+                    print ('do u want DD?')
                 sumOfPoints += newCardPointsToAdd
                 newCardPointsToAdd = []
                 newCardPoints.clear()
                 newCard.clear()
                 if (sumOfPoints == 21):
-                    print ('BLACKJACK! - your total points are 21!')
+                    print ('Your total points are 21!')
                     return (sumOfPoints)
                 elif (sumOfPoints > 21):
                     print (f"Number of your points are: {sumOfPoints}!")
@@ -105,7 +133,7 @@ def play_black_jack (sumOfPoints, cards, newCardPoints):
                     stand - if you don't want another card
                 """)
 
-def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints):
+def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards):
     if (pointsScored <= 21):
         print (f"The dealer's cards are: {dealerCards} and the number of his points is {sumOfDealerPoints}")
         while True:
@@ -131,9 +159,28 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
         elif (sumOfDealerPoints > pointsScored):
             print ('You lost! Try next time!')
             return (sumOfDealerPoints)
-        elif (sumOfDealerPoints == pointsScored):
+        elif (sumOfDealerPoints == pointsScored and sumOfDealerPoints != 21):
             print ('It is a draw!')
             return (sumOfDealerPoints)
+        elif (sumOfDealerPoints == pointsScored and sumOfDealerPoints == 21):
+            if (len(dealerCards) == 2):
+                if (len(playerCards) == 2):
+                    print ('It is a draw!')
+                    return (sumOfDealerPoints)
+                else:
+                    print ('You lost! Try next time!')
+                    print ('BLACKJACK always win with 21 pts in 3 or more cards!')
+                    return (sumOfDealerPoints)
+            elif (len(dealerCards) > 2):
+                if (len(playerCards) == 2):
+                    print ('Congratulations, you managed to win!')
+                    print ('BLACKJACK always win with 21 pts in 3 or more cards!')
+                    return (sumOfDealerPoints)
+                else:
+                    print ('It is a draw!')
+                    return (sumOfDealerPoints)
+                
+            
     elif (pointsScored > 21):
         return (sumOfDealerPoints)
 
@@ -164,20 +211,23 @@ print(f"First dealer card is: {dealerCards[0]}")
 sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
 sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
 
+
+
+
 #CHECK IF PLAYER CAN SPLIT
 
 firstCard = [playerCards[0]]
 secondCard = [playerCards[1]]
 
-firstCardPunctation = sum(((give_number_of_points(firstCard, []))))
-secondCardPunctation = sum(((give_number_of_points(secondCard, []))))
+firstCardPunctation = sum((give_number_of_points(firstCard, [])))
+secondCardPunctation = sum((give_number_of_points(secondCard, [])))
 
 if (firstCardPunctation < 10 or firstCardPunctation == 11):
     if (firstCardPunctation == secondCardPunctation):
         decisionToSplit = input ('Do you want to split? yes/no: ')
     else:
         decisionToSplit = 'no'
-elif (firstCardPunctation == 10):       #many cards has value of 10 (check if the player has same card but diffrent colour to splt) 
+elif (firstCardPunctation == 10):       #many cards has value of 10 (check if the player has cards with the same ranks) 
     if ("10" in firstCard[0] and "10" in secondCard[0]):
         decisionToSplit = input ('Do you want to split? yes/no: ')
     elif ("Jack" in firstCard[0] and "Jack" in secondCard[0]):
@@ -191,7 +241,13 @@ elif (firstCardPunctation == 10):       #many cards has value of 10 (check if th
 else:
     decisionToSplit = 'no'
 
+# DD wout split
 
+if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):   #DD wout split, players cant if he has BJ
+    print ('do u wanna DD?')
+
+
+# Player GAME
 
 
 if (decisionToSplit.upper() == 'YES'):
@@ -205,17 +261,29 @@ if (decisionToSplit.upper() == 'YES'):
         print('Now let\'s check the dealers cards!')
     if (pointsScoredOnFirstHand <= 21):
         print ('For first split hand: ') 
-    sumOfDealerPoints = make_dealer_move (pointsScoredOnFirstHand, dealerCards, sumOfDealerPoints, newDealersCardPoints)
+    sumOfDealerPoints = make_dealer_move (pointsScoredOnFirstHand, dealerCards, sumOfDealerPoints, newDealersCardPoints, firstCard)
     if (pointsScoredOnSecondHand <= 21):
         print ('FOR second split hand: ') 
-    make_dealer_move (pointsScoredOnSecondHand, dealerCards, sumOfDealerPoints, newDealersCardPoints)
+    make_dealer_move (pointsScoredOnSecondHand, dealerCards, sumOfDealerPoints, newDealersCardPoints, secondCard)
 else:
     #player's turn
     pointsScored = play_black_jack(sumOfPlayerPoints, playerCards, newCardPoints)
+
+    #INSURANCE
+    firstDealerCard = [dealerCards[0]]
+    firstDealerCardPunctation = sum((give_number_of_points(firstCard, [])))
+    if (firstDealerCardPunctation == 11):
+        print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
+        decisionToInsurance = input ("If u want to, write: yes: ")
+        if (decisionToInsurance.upper() == 'YES'):
+            print ('here we took 1/2 of your bet')   # insurance kaska
+
     #dealer's turn when split
     if (pointsScored <= 21):
         print('Now let\'s check the dealers cards!')
-    make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints)
+    make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
+
+    
 
     
 
