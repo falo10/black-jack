@@ -12,7 +12,8 @@ BLACKJACK always win with 21 pts in 3 or more cards!!!!
 Punctation: 
 1. Cards from two to ten have a value equal to the number of the card
 2. The Jack, Queen and King are worth 10 points
-3. The ace is worth 1 or 11, whichever is better for the player.
+3. The ace is worth 1 or 11, whichever is better for the player. (For dealer it is
+always 11 unless, he has 2 aces at the start, then 1st is worth 11 and 2nd is worth 1.
 
 Start of a game:
 The dealer starts the game by giving two cards. The dealer's
@@ -94,6 +95,15 @@ def give_number_of_points (cardsHeld, pointsOwned):
                 pointsOwned.append(punctuation)
     return (pointsOwned)
 
+def choose_ace_value (cardsReceived):
+    for card in cardsReceived:
+        for cards, punctuation in cardPointsToUse:
+            if (card == cards):
+                if (cardPoints[card] == 11):
+                    decisionForAcePunctation = input(f"If you want {card} was worth 1 point instead of 11 write \"yes\": ")
+                    if (decisionForAcePunctation.upper() == 'YES'):
+                        cardPoints[card] = 1
+
 def play_black_jack (sumOfPoints, cards, newCardPoints):
     while True:
         if (sumOfPoints > 21):
@@ -109,6 +119,7 @@ def play_black_jack (sumOfPoints, cards, newCardPoints):
             if (choice.upper() == 'HIT'):
                 newCard.append(first_deal(cardList))
                 print (f"Your new card is {newCard}")
+                choose_ace_value (newCard)
                 newCardPoints = give_number_of_points(newCard, newCardPoints)
                 newCardPointsToAdd = sum(newCardPoints)  # need int to add to our points
                 cards.extend(newCard)    
@@ -185,8 +196,8 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
         return (sumOfDealerPoints)
 
 
-playerCards= []
-dealerCards = []
+playerCards= ["4 hearts", "4 diamonds"]
+dealerCards = ["Ace hearts", "Ace diamonds"]
 playerPoints =[]
 dealerPoints=[]
 cardPointsToUse = cardPoints.items()
@@ -200,18 +211,21 @@ newDealersCardPoints =[]
 #START OF THE GAME
 
 shuffle(cardList)
-
+"""
 for deal in range (2):
     playerCards.append(first_deal(cardList))
     dealerCards.append(first_deal(cardList))
-
+"""
 print(f"Your cards are: {playerCards}")
 print(f"First dealer card is: {dealerCards[0]}")
+
+choose_ace_value (playerCards)
 
 sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
 sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
 
-
+if (sumOfDealerPoints == 22):
+    sumOfDealerPoints = 12
 
 
 #CHECK IF PLAYER CAN SPLIT
@@ -292,9 +306,3 @@ else:
     if (decisionToInsurance.upper() == 'YES'):
         if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
             print ('INSURANCE ACTIVE')
-    
-    
-
-    
-
-    
