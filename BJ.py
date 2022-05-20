@@ -15,6 +15,12 @@ Punctation:
 3. The ace is worth 1 or 11, whichever is better for the player. (For dealer it is
 always 11 unless, he has 2 aces at the start, then 1st is worth 11 and 2nd is worth 1.
 
+Bets:
+Imagine you bet $100. If you win, you get your original $100 bet back, plus the dealer gives you $100.
+If you draw you keep your bet money. And if you get blackjack, you get
+your original $100 bet back, plus $150 from the dealer because for blackjack,
+you get 1.5 times your bet. In case of lose - you are losing your bet.
+
 Start of a game:
 The dealer starts the game by giving two cards. The dealer's
 hand always has one card face-up and a card face-down.
@@ -215,6 +221,37 @@ newDealersCardPoints =[]
 
 
 #START OF THE GAME
+
+while True:
+    try:
+        money = int(input('Enter the amount of money you want to enter the game with: '))
+        print(f"""
+There is now {money} dolars on your account!
+
+From this amount you will be able to withdraw money for further bets!""")
+        break
+    except ValueError:
+        print ('Incorrect value! TRY AGAIN!')
+
+
+
+while True:
+    try:
+        bet = int(input(f"""
+Let's start the game!!!
+Enter the amount of money for this bet: """))
+        money -= bet
+        print (f"""
+You bet {bet} dolars!
+On your account remains {money} dolars!
+""")
+        break
+    except ValueError:
+        print ('Incorrect value! TRY AGAIN!')
+
+
+
+
 
 shuffle(cardList)
 
