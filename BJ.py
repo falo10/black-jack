@@ -49,6 +49,12 @@ If the number of points is equal to 17 or more, then he has to stand.
 
 Results:
 
+A player wins when one of the following occurs:
+
+The player scores blackjack (an ace and one of the cards worth 10 points) and the dealer does not.
+The player has 21 or less points and the dealer exceeds that number.
+Both are below 21 points, but the player is closer to the target number.
+In other cases, there is either a tie (the same number of points) or the player loses.
 """
 
 cardList = ["2 hearts", "2 diamonds", "2 spades", "2 clubs",
