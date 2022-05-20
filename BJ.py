@@ -112,7 +112,7 @@ def choose_ace_value (cardsReceived):
         for cards, punctuation in cardPointsToUse:
             if (card == cards):
                 if (cardPoints[card] == 11):
-                    decisionForAcePunctation = input(f"If you want {card} was worth 1 point instead of 11 write \"yes\": ")
+                    decisionForAcePunctation = input(f"If you want {card} was worth 1 point instead of 11 write \"yes\" else write \"no\" ")
                     if (decisionForAcePunctation.upper() == 'YES'):
                         cardPoints[card] = 1
 
@@ -175,12 +175,20 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
                 break
         if (sumOfDealerPoints > 21):
             print ('Congratulations, you managed to win!')
+            betForGame.append (bet)
             return (sumOfDealerPoints)
         elif (sumOfDealerPoints < pointsScored):
-            print ('Congratulations, you managed to win!')
-            return (sumOfDealerPoints)
+            if (len(playerCards) == 2 and pointsScored == 21):
+                print ('Congratulations, you managed to win!')
+                betForGame.append (bjBet)
+                return (sumOfDealerPoints)
+            else:
+                print ('Congratulations, you managed to win!')
+                betForGame.append (bet)
+                return (sumOfDealerPoints)
         elif (sumOfDealerPoints > pointsScored):
             print ('You lost! Try next time!')
+            betForGame.pop()
             return (sumOfDealerPoints)
         elif (sumOfDealerPoints == pointsScored and sumOfDealerPoints != 21):
             print ('It is a draw!')
@@ -193,11 +201,13 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
                 else:
                     print ('You lost! Try next time!')
                     print ('BLACKJACK always win with 21 pts in 3 or more cards!')
+                    betForGame.pop()
                     return (sumOfDealerPoints)
             elif (len(dealerCards) > 2):
                 if (len(playerCards) == 2):
                     print ('Congratulations, you managed to win!')
                     print ('BLACKJACK always win with 21 pts in 3 or more cards!')
+                    betForGame.append (bjBet)
                     return (sumOfDealerPoints)
                 else:
                     print ('It is a draw!')
@@ -205,6 +215,7 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
                 
             
     elif (pointsScored > 21):
+        betForGame.pop()
         return (sumOfDealerPoints)
 
 
@@ -217,7 +228,7 @@ newCard=[]
 newCardPoints =[]
 newDealersCard=[]        
 newDealersCardPoints =[]
-
+betForGame = []
 
 
 #START OF THE GAME
@@ -249,6 +260,8 @@ On your account remains {money} dolars!
     except ValueError:
         print ('Incorrect value! TRY AGAIN!')
 
+bjBet = (bet * 3)/2
+betForGame.append (bet)
 
 
 
@@ -308,6 +321,12 @@ if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):   #DD wout sp
 
 
 if (decisionToSplit.upper() == 'YES'):
+    money -= bet
+    betForGame.append(bet)
+    print (f"""
+You bet another {bet} dolars for split cards!
+On your account remains {money} dolars!
+""")
     #player's turn when split
     print ('!!!!!FIRST SPLIT-HAND!!!!!')
     pointsScoredOnFirstHand = play_black_jack(firstCardPunctation, firstCard, newCardPoints)
@@ -349,3 +368,14 @@ else:
     if (decisionToInsurance.upper() == 'YES'):
         if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
             print ('INSURANCE ACTIVE')
+
+
+#BET RESULTS
+
+betResult = sum (betForGame)
+money += betResult
+print (f"""After the game your current account is:
+
+{money} dolars
+
+""")
