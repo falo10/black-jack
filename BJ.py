@@ -219,8 +219,8 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
         return (sumOfDealerPoints)
 
 
-playerCards= []
-dealerCards = []
+playerCards= ["9 hearts", "9 diamonds"]
+dealerCards = ["6 hearts", "6 diamonds"]
 playerPoints =[]
 dealerPoints=[]
 cardPointsToUse = cardPoints.items()
@@ -244,21 +244,26 @@ From this amount you will be able to withdraw money for further bets!""")
     except ValueError:
         print ('Incorrect value! TRY AGAIN!')
 
-
-
 while True:
     try:
         bet = int(input(f"""
-Let's start the game!!!
 Enter the amount of money for this bet: """))
         money -= bet
-        print (f"""
-You bet {bet} dolars!
-On your account remains {money} dolars!
-""")
-        break
+        if (money >= 0):
+            print (f"""
+    You bet {bet} dolars!
+    On your account remains {money} dolars!
+    """)
+            break
+        else:
+            print ('You don\'t have enoug money on your account! Change amount of your bet!')
+            money += bet
+            print (money)
+            continue
     except ValueError:
         print ('Incorrect value! TRY AGAIN!')
+
+
 
 bjBet = (bet * 3)/2
 betForGame.append (bet)
@@ -267,11 +272,11 @@ betForGame.append (bet)
 
 
 shuffle(cardList)
-
+"""
 for deal in range (2):
     playerCards.append(first_deal(cardList))
     dealerCards.append(first_deal(cardList))
-
+"""
 print(f"Your cards are: {playerCards}")
 print(f"First dealer card is: {dealerCards[0]}")
 
@@ -293,19 +298,34 @@ firstCardPunctation = sum((give_number_of_points(firstCard, [])))
 secondCardPunctation = sum((give_number_of_points(secondCard, [])))
 
 if (firstCardPunctation < 10 or firstCardPunctation == 11):
-    if (firstCardPunctation == secondCardPunctation):
+    if (firstCardPunctation == secondCardPunctation and money - bet >= 0):
         decisionToSplit = input ('Do you want to split? yes/no: ')
+    elif (firstCardPunctation == secondCardPunctation and money - bet < 0):
+        print ('You have not enough money to split')
+        decisionToSplit = 'no'
     else:
         decisionToSplit = 'no'
 elif (firstCardPunctation == 10):       #many cards has value of 10 (check if the player has cards with the same ranks) 
-    if ("10" in firstCard[0] and "10" in secondCard[0]):
+    if ("10" in firstCard[0] and "10" in secondCard[0] and money - bet >= 0):
         decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif ("Jack" in firstCard[0] and "Jack" in secondCard[0]):
+    elif ("10" in firstCard[0] and "10" in secondCard[0] and money - bet < 0):
+        print ('You have not enough money to split')
+        decisionToSplit = 'no'
+    elif ("Jack" in firstCard[0] and "Jack" in secondCard[0] and money - bet >= 0):
         decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif ("Queen" in firstCard[0] and "Queen" in secondCard[0]):
+    elif ("Jack" in firstCard[0] and "Jack" in secondCard[0] and money - bet < 0):
+        print ('You have not enough money to split')
+        decisionToSplit = 'no'
+    elif ("Queen" in firstCard[0] and "Queen" in secondCard[0] and money - bet >= 0):
         decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif ("King" in firstCard[0] and "King" in secondCard[0]):
+    elif ("Queen" in firstCard[0] and "Queen" in secondCard[0] and money - bet < 0):
+        print ('You have not enough money to split')
+        decisionToSplit = 'no'
+    elif ("King" in firstCard[0] and "King" in secondCard[0] and money - bet >= 0):
         decisionToSplit = input ('Do you want to split? yes/no: ')
+    elif ("King" in firstCard[0] and "King" in secondCard[0] and money - bet < 0):
+        print ('You have not enough money to split')
+        decisionToSplit = 'no'
     else:
         decisionToSplit = 'no'
 else:
