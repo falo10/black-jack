@@ -217,8 +217,8 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
         return (sumOfDealerPoints)
 
 
-playerCards= ["9 clubs","10 hearts"]
-dealerCards = ["Ace hearts", "King hearts"]
+playerCards= []
+dealerCards = []
 playerPoints =[]
 dealerPoints=[]
 cardPointsToUse = cardPoints.items()
@@ -270,11 +270,11 @@ betForGame.append (bet)
 
 
 shuffle(cardList)
-"""
+
 for deal in range (2):
     playerCards.append(first_deal(cardList))
     dealerCards.append(first_deal(cardList))
-"""
+
 print(f"Your cards are: {playerCards}")
 print(f"First dealer card is: {dealerCards[0]}")
 
