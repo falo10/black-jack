@@ -340,6 +340,9 @@ if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):
 You bet another {bet} dolars for split cards!
 On your account remains {money} dolars!
 """)
+else:
+    decisionToDoubleDown = 'no'
+    
             
 # Player GAME
 
