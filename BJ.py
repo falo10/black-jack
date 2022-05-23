@@ -217,8 +217,8 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
         return (sumOfDealerPoints)
 
 
-playerCards= []
-dealerCards = []
+playerCards= ["9 clubs","10 hearts"]
+dealerCards = ["Ace hearts", "King hearts"]
 playerPoints =[]
 dealerPoints=[]
 cardPointsToUse = cardPoints.items()
@@ -270,11 +270,11 @@ betForGame.append (bet)
 
 
 shuffle(cardList)
-
+"""
 for deal in range (2):
     playerCards.append(first_deal(cardList))
     dealerCards.append(first_deal(cardList))
-
+"""
 print(f"Your cards are: {playerCards}")
 print(f"First dealer card is: {dealerCards[0]}")
 
@@ -329,7 +329,7 @@ elif (firstCardPunctation == 10):       #many cards has value of 10 (check if th
 else:
     decisionToSplit = 'no'
 
-# DD wout split
+# DD
 
 if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):   
     if(money - bet >= 0):
@@ -384,7 +384,8 @@ else:
                 print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
                 decisionToInsurance = input ("If u want to, write: yes: ")
                 if (decisionToInsurance.upper() == 'YES'):
-                    print ('here we took another 1/2 of your bet')   # insurance kaska
+                    betInsurance = bet /2 # insurance kaska
+                    money -= betInsurance
         else:
             decisionToInsurance = 'no'
 
@@ -396,7 +397,10 @@ else:
         # INSURANCE  CHECK
         if (decisionToInsurance.upper() == 'YES'):
             if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
-                print ('INSURANCE ACTIVE')
+                print ('Dealer has Blackjack! You decided to take Insurance so we reimburse the costs of the bet!')
+                money += bet
+                money += betInsurance
+
     elif (decisionToDoubleDown.upper() == 'YES'):
         #player's turn
         newCard.append(first_deal(cardList))
