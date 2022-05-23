@@ -1,7 +1,9 @@
 from random import *
 from collections import *
 
-rulesOfTheBlackJack = """ Object of the game is to get the number of points as close as possible to 21.
+rulesOfTheBlackJack = """ 
+
+Object of the game is to get the number of points as close as possible to 21.
 
 BLACKJACK is only when a plyer or dealer has 21 points inthe first two cards.
 
