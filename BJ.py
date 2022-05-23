@@ -1,7 +1,7 @@
 from random import *
 from collections import *
 
-""" Object of the game is to get the number of points as close as possible to 21.
+rulesOfTheBlackJack = """ Object of the game is to get the number of points as close as possible to 21.
 
 BLACKJACK is only when a plyer or dealer has 21 points inthe first two cards.
 
@@ -217,19 +217,32 @@ def make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCa
         return (sumOfDealerPoints)
 
 
-playerCards= []
-dealerCards = []
-playerPoints =[]
-dealerPoints=[]
-cardPointsToUse = cardPoints.items()
-newCard=[]        
-newCardPoints =[]
-newDealersCard=[]        
-newDealersCardPoints =[]
-betForGame = []
-
 
 #START OF THE GAME
+
+print ("""
+Welcome to BlackJack by falo10
+""")
+
+
+while True:
+    decisionToStart = input ("""
+
+Write:
+start - if you want to play BlacJack!
+rules - if you want to read the rules!
+""")
+    if (decisionToStart.upper() == 'START'):
+        break
+    elif (decisionToStart.upper() == 'RULES'):
+        print (rulesOfTheBlackJack)
+        continue
+    else:
+        print ('Incorrect data was entered!Try again...')
+        continue
+        
+
+        
 
 while True:
     try:
@@ -242,201 +255,230 @@ From this amount you will be able to withdraw money for further bets!""")
     except ValueError:
         print ('Incorrect value! TRY AGAIN!')
 
+
 while True:
-    try:
-        bet = int(input(f"""
-Enter the amount of money for this bet: """))
-        money -= bet
-        if (money >= 0):
-            print (f"""
-    You bet {bet} dolars!
+
+    playerCards= []
+    dealerCards = []
+    playerPoints =[]
+    dealerPoints=[]
+    cardPointsToUse = cardPoints.items()
+    newCard=[]        
+    newCardPoints =[]
+    newDealersCard=[]        
+    newDealersCardPoints =[]
+    betForGame = []
+
+
+
+
+    while True:
+        try:
+            bet = int(input(f"""
+    Enter the amount of money for this bet: """))
+            money -= bet
+            if (money >= 0):
+                print (f"""
+        You bet {bet} dolars!
+        On your account remains {money} dolars!
+        """)
+                break
+            else:
+                print ('You don\'t have enoug money on your account! Change amount of your bet!')
+                money += bet
+                print (money)
+                continue
+        except ValueError:
+            print ('Incorrect value! TRY AGAIN!')
+
+
+
+    bjBet = (bet * 3)/2
+    betForGame.append (bet)
+
+
+
+
+    shuffle(cardList)
+
+    for deal in range (2):
+        playerCards.append(first_deal(cardList))
+        dealerCards.append(first_deal(cardList))
+
+    print(f"Your cards are: {playerCards}")
+    print(f"First dealer card is: {dealerCards[0]}")
+
+    choose_ace_value (playerCards)
+
+    sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
+    sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
+
+    if (sumOfDealerPoints == 22):
+        sumOfDealerPoints = 12
+
+
+    #CHECK IF PLAYER CAN SPLIT
+
+    firstCard = [playerCards[0]]
+    secondCard = [playerCards[1]]
+
+    firstCardPunctation = sum((give_number_of_points(firstCard, [])))
+    secondCardPunctation = sum((give_number_of_points(secondCard, [])))
+
+    if (firstCardPunctation < 10 or firstCardPunctation == 11):
+        if (firstCardPunctation == secondCardPunctation and money - bet >= 0):
+            decisionToSplit = input ('Do you want to split? yes/no: ')
+        elif (firstCardPunctation == secondCardPunctation and money - bet < 0):
+            print ('You have not enough money to split')
+            decisionToSplit = 'no'
+        else:
+            decisionToSplit = 'no'
+    elif (firstCardPunctation == 10):       #many cards has value of 10 (check if the player has cards with the same ranks) 
+        if ("10" in firstCard[0] and "10" in secondCard[0] and money - bet >= 0):
+            decisionToSplit = input ('Do you want to split? yes/no: ')
+        elif ("10" in firstCard[0] and "10" in secondCard[0] and money - bet < 0):
+            print ('You have not enough money to split')
+            decisionToSplit = 'no'
+        elif ("Jack" in firstCard[0] and "Jack" in secondCard[0] and money - bet >= 0):
+            decisionToSplit = input ('Do you want to split? yes/no: ')
+        elif ("Jack" in firstCard[0] and "Jack" in secondCard[0] and money - bet < 0):
+            print ('You have not enough money to split')
+            decisionToSplit = 'no'
+        elif ("Queen" in firstCard[0] and "Queen" in secondCard[0] and money - bet >= 0):
+            decisionToSplit = input ('Do you want to split? yes/no: ')
+        elif ("Queen" in firstCard[0] and "Queen" in secondCard[0] and money - bet < 0):
+            print ('You have not enough money to split')
+            decisionToSplit = 'no'
+        elif ("King" in firstCard[0] and "King" in secondCard[0] and money - bet >= 0):
+            decisionToSplit = input ('Do you want to split? yes/no: ')
+        elif ("King" in firstCard[0] and "King" in secondCard[0] and money - bet < 0):
+            print ('You have not enough money to split')
+            decisionToSplit = 'no'
+        else:
+            decisionToSplit = 'no'
+    else:
+        decisionToSplit = 'no'
+
+    # DD
+
+    if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):   
+        if(money - bet >= 0):
+            decisionToDoubleDown = input('Do you want to double your bet? yes/no ')
+            if (decisionToDoubleDown.upper() == 'YES'):
+                money -= bet
+                print (f"""
+    You bet another {bet} dolars for split cards!
     On your account remains {money} dolars!
     """)
-            break
-        else:
-            print ('You don\'t have enoug money on your account! Change amount of your bet!')
-            money += bet
-            print (money)
-            continue
-    except ValueError:
-        print ('Incorrect value! TRY AGAIN!')
-
-
-
-bjBet = (bet * 3)/2
-betForGame.append (bet)
-
-
-
-
-shuffle(cardList)
-
-for deal in range (2):
-    playerCards.append(first_deal(cardList))
-    dealerCards.append(first_deal(cardList))
-
-print(f"Your cards are: {playerCards}")
-print(f"First dealer card is: {dealerCards[0]}")
-
-choose_ace_value (playerCards)
-
-sumOfPlayerPoints = sum(give_number_of_points(playerCards, playerPoints ))
-sumOfDealerPoints = sum(give_number_of_points(dealerCards, dealerPoints ))
-
-if (sumOfDealerPoints == 22):
-    sumOfDealerPoints = 12
-
-
-#CHECK IF PLAYER CAN SPLIT
-
-firstCard = [playerCards[0]]
-secondCard = [playerCards[1]]
-
-firstCardPunctation = sum((give_number_of_points(firstCard, [])))
-secondCardPunctation = sum((give_number_of_points(secondCard, [])))
-
-if (firstCardPunctation < 10 or firstCardPunctation == 11):
-    if (firstCardPunctation == secondCardPunctation and money - bet >= 0):
-        decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif (firstCardPunctation == secondCardPunctation and money - bet < 0):
-        print ('You have not enough money to split')
-        decisionToSplit = 'no'
     else:
-        decisionToSplit = 'no'
-elif (firstCardPunctation == 10):       #many cards has value of 10 (check if the player has cards with the same ranks) 
-    if ("10" in firstCard[0] and "10" in secondCard[0] and money - bet >= 0):
-        decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif ("10" in firstCard[0] and "10" in secondCard[0] and money - bet < 0):
-        print ('You have not enough money to split')
-        decisionToSplit = 'no'
-    elif ("Jack" in firstCard[0] and "Jack" in secondCard[0] and money - bet >= 0):
-        decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif ("Jack" in firstCard[0] and "Jack" in secondCard[0] and money - bet < 0):
-        print ('You have not enough money to split')
-        decisionToSplit = 'no'
-    elif ("Queen" in firstCard[0] and "Queen" in secondCard[0] and money - bet >= 0):
-        decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif ("Queen" in firstCard[0] and "Queen" in secondCard[0] and money - bet < 0):
-        print ('You have not enough money to split')
-        decisionToSplit = 'no'
-    elif ("King" in firstCard[0] and "King" in secondCard[0] and money - bet >= 0):
-        decisionToSplit = input ('Do you want to split? yes/no: ')
-    elif ("King" in firstCard[0] and "King" in secondCard[0] and money - bet < 0):
-        print ('You have not enough money to split')
-        decisionToSplit = 'no'
+        decisionToDoubleDown = 'no'
+        
+                
+    # Player GAME
+
+
+    if (decisionToSplit.upper() == 'YES'):
+        money -= bet
+        betForGame.append(bet)
+        print (f"""
+    You bet another {bet} dolars for split cards!
+    On your account remains {money} dolars!
+    """)
+        #player's turn when split
+        print ('!!!!!FIRST SPLIT-HAND!!!!!')
+        pointsScoredOnFirstHand = play_black_jack(firstCardPunctation, firstCard, newCardPoints)
+        print ('!!!!!SECOND SPLIT-HAND!!!!!')
+        pointsScoredOnSecondHand = play_black_jack(secondCardPunctation, secondCard, newCardPoints)
+        #dealer's turn when split
+        if (pointsScoredOnFirstHand <= 21 or pointsScoredOnSecondHand <= 21):
+            print('Now let\'s check the dealers cards!')
+        if (pointsScoredOnFirstHand <= 21):
+            print ('For first split hand: ') 
+        sumOfDealerPoints = make_dealer_move (pointsScoredOnFirstHand, dealerCards, sumOfDealerPoints, newDealersCardPoints, firstCard)
+        if (pointsScoredOnSecondHand <= 21):
+            print ('FOR second split hand: ') 
+        make_dealer_move (pointsScoredOnSecondHand, dealerCards, sumOfDealerPoints, newDealersCardPoints, secondCard)
     else:
-        decisionToSplit = 'no'
-else:
-    decisionToSplit = 'no'
 
-# DD
+        if (decisionToDoubleDown.upper() != 'YES'):
+            #player's turn
+            pointsScored = play_black_jack(sumOfPlayerPoints, playerCards, newCardPoints)
 
-if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):   
-    if(money - bet >= 0):
-        decisionToDoubleDown = input('Do you want to double your bet? yes/no ')
-        if (decisionToDoubleDown.upper() == 'YES'):
-            money -= bet
-            print (f"""
-You bet another {bet} dolars for split cards!
-On your account remains {money} dolars!
-""")
-else:
-    decisionToDoubleDown = 'no'
-    
-            
-# Player GAME
-
-
-if (decisionToSplit.upper() == 'YES'):
-    money -= bet
-    betForGame.append(bet)
-    print (f"""
-You bet another {bet} dolars for split cards!
-On your account remains {money} dolars!
-""")
-    #player's turn when split
-    print ('!!!!!FIRST SPLIT-HAND!!!!!')
-    pointsScoredOnFirstHand = play_black_jack(firstCardPunctation, firstCard, newCardPoints)
-    print ('!!!!!SECOND SPLIT-HAND!!!!!')
-    pointsScoredOnSecondHand = play_black_jack(secondCardPunctation, secondCard, newCardPoints)
-    #dealer's turn when split
-    if (pointsScoredOnFirstHand <= 21 or pointsScoredOnSecondHand <= 21):
-        print('Now let\'s check the dealers cards!')
-    if (pointsScoredOnFirstHand <= 21):
-        print ('For first split hand: ') 
-    sumOfDealerPoints = make_dealer_move (pointsScoredOnFirstHand, dealerCards, sumOfDealerPoints, newDealersCardPoints, firstCard)
-    if (pointsScoredOnSecondHand <= 21):
-        print ('FOR second split hand: ') 
-    make_dealer_move (pointsScoredOnSecondHand, dealerCards, sumOfDealerPoints, newDealersCardPoints, secondCard)
-else:
-
-    if (decisionToDoubleDown.upper() != 'YES'):
-        #player's turn
-        pointsScored = play_black_jack(sumOfPlayerPoints, playerCards, newCardPoints)
-
-        #INSURANCE
-        firstDealerCard = [dealerCards[0]]
-        firstDealerCardPunctation = sum((give_number_of_points(firstDealerCard, [])))
-        if (firstDealerCardPunctation == 11):
-            if (sumOfPlayerPoints == 21 and len(playerCards) == 2):
-                decisionToInsurance = 'no'
+            #INSURANCE
+            firstDealerCard = [dealerCards[0]]
+            firstDealerCardPunctation = sum((give_number_of_points(firstDealerCard, [])))
+            if (firstDealerCardPunctation == 11):
+                if (sumOfPlayerPoints == 21 and len(playerCards) == 2):
+                    decisionToInsurance = 'no'
+                else:
+                    print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
+                    decisionToInsurance = input ("If u want to, write: yes: ")
+                    if (decisionToInsurance.upper() == 'YES'):
+                        betInsurance = bet /2 # insurance kaska
+                        money -= betInsurance
             else:
-                print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
-                decisionToInsurance = input ("If u want to, write: yes: ")
-                if (decisionToInsurance.upper() == 'YES'):
-                    betInsurance = bet /2 # insurance kaska
-                    money -= betInsurance
-        else:
-            decisionToInsurance = 'no'
+                decisionToInsurance = 'no'
 
-        #dealer's turn
-        if (pointsScored <= 21):
-            print('Now let\'s check the dealers cards!')
-        make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
+            #dealer's turn
+            if (pointsScored <= 21):
+                print('Now let\'s check the dealers cards!')
+            make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
 
-        # INSURANCE  CHECK
-        if (decisionToInsurance.upper() == 'YES'):
-            if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
-                print ('Dealer has Blackjack! You decided to take Insurance so we reimburse the costs of the bet!')
-                money += bet
-                money += betInsurance
+            # INSURANCE  CHECK
+            if (decisionToInsurance.upper() == 'YES'):
+                if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
+                    print ('Dealer has Blackjack! You decided to take Insurance so we reimburse the costs of the bet!')
+                    money += bet
+                    money += betInsurance
 
-    elif (decisionToDoubleDown.upper() == 'YES'):
-        #player's turn
-        newCard.append(first_deal(cardList))
-        print (f"Your new card is {newCard}")
-        choose_ace_value (newCard)
-        newCardPoints = give_number_of_points(newCard, newCardPoints)
-        newCardPointsToAdd = sum(newCardPoints)  # need int to add to our points
-        playerCards.extend(newCard)
-        sumOfPlayerPoints += newCardPointsToAdd
-        newCardPointsToAdd = []
-        newCardPoints.clear()
-        newCard.clear()
-        print (f"Your number of points is: {sumOfPlayerPoints}")
-        if (sumOfPlayerPoints > 21):
-            print ('You lost! Try next time!')
-        else:
-            print('Now let\'s check the dealers cards!')
-        make_dealer_move (sumOfPlayerPoints, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
+        elif (decisionToDoubleDown.upper() == 'YES'):
+            #player's turn
+            newCard.append(first_deal(cardList))
+            print (f"Your new card is {newCard}")
+            choose_ace_value (newCard)
+            newCardPoints = give_number_of_points(newCard, newCardPoints)
+            newCardPointsToAdd = sum(newCardPoints)  # need int to add to our points
+            playerCards.extend(newCard)
+            sumOfPlayerPoints += newCardPointsToAdd
+            newCardPointsToAdd = []
+            newCardPoints.clear()
+            newCard.clear()
+            print (f"Your number of points is: {sumOfPlayerPoints}")
+            if (sumOfPlayerPoints > 21):
+                print ('You lost! Try next time!')
+            else:
+                print('Now let\'s check the dealers cards!')
+            make_dealer_move (sumOfPlayerPoints, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
 
 
-#BET RESULTS
+    #BET RESULTS
 
-if (decisionToDoubleDown.upper() == 'YES'):
-    betResult =  2 * sum (betForGame)
-    money += betResult
-    print (f"""After the game your current account is:
+    if (decisionToDoubleDown.upper() == 'YES'):
+        betResult =  2 * sum (betForGame)
+        money += betResult
+        print (f"""After the game your current account is:
 
-    {money} dolars
+        {money} dolars
 
-    """)
+        """)
 
-else:
-    betResult = sum (betForGame)
-    money += betResult
-    print (f"""After the game your current account is:
+    else:
+        betResult = sum (betForGame)
+        money += betResult
+        print (f"""After the game your current account is:
 
-    {money} dolars
+        {money} dolars
 
-    """)
+        """)
+
+    if (money <= 0):
+        print ('You lost your all money!')
+        break
+    elif (money >0):
+        decisionToPlay = input("""Write:
+"yes" - if you want still play
+"no" - if you want to quit
+""")
+        if (decisionToPlay.upper() == 'NO'):
+            print ('Thank you for your game!')
+            break
