@@ -38,7 +38,7 @@ The two hands must be played separately completing the first hand before going o
 Doubling Down- You may increase your bet by “doubling down.” After receiving your first two cards,
 you may “double down” by increasing your bet up to the amount of your original bet,
 receiving only one additional card. You may “double down” on any two cards except
-for a natural Blackjack. You can also “double down” after “splitting” a pair.
+for a natural Blackjack.
 
 Insurance - If, during the course of play, the dealer's face-up card is an ace, the player may assume
 that the second (down) card is worth 10 points and the dealer has blackjack. Then player can play insurance.
@@ -119,8 +119,8 @@ def choose_ace_value (cardsReceived):
 def play_black_jack (sumOfPoints, cards, newCardPoints):
     while True:
         if (sumOfPoints > 21):
-                print ('You lost! Try next time!')
-                return (sumOfPoints)
+            print ('You lost! Try next time!')
+            return (sumOfPoints)
         elif (sumOfPoints == 21):
             print ('BLACKJACK! - your total points are 21!')
             return sumOfPoints
@@ -135,8 +135,6 @@ def play_black_jack (sumOfPoints, cards, newCardPoints):
                 newCardPoints = give_number_of_points(newCard, newCardPoints)
                 newCardPointsToAdd = sum(newCardPoints)  # need int to add to our points
                 cards.extend(newCard)    
-                if (decisionToSplit.upper() == 'YES' and len(cards) == 2):  #DOUBLE DOWN FOR SPLIT
-                    print ('do u want DD?')
                 sumOfPoints += newCardPointsToAdd
                 newCardPointsToAdd = []
                 newCardPoints.clear()
@@ -333,10 +331,16 @@ else:
 
 # DD wout split
 
-if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):   #DD wout split, players cant if he has BJ
-    print ('do u wanna DD?')
-
-
+if (decisionToSplit.upper() != 'YES' and sumOfPlayerPoints != 21):   
+    if(money - bet >= 0):
+        decisionToDoubleDown = input('Do you want to double your bet? yes/no ')
+        if (decisionToDoubleDown.upper() == 'YES'):
+            money -= bet
+            print (f"""
+You bet another {bet} dolars for split cards!
+On your account remains {money} dolars!
+""")
+            
 # Player GAME
 
 
@@ -362,40 +366,70 @@ On your account remains {money} dolars!
         print ('FOR second split hand: ') 
     make_dealer_move (pointsScoredOnSecondHand, dealerCards, sumOfDealerPoints, newDealersCardPoints, secondCard)
 else:
-    #player's turn
-    pointsScored = play_black_jack(sumOfPlayerPoints, playerCards, newCardPoints)
 
-    #INSURANCE
-    firstDealerCard = [dealerCards[0]]
-    firstDealerCardPunctation = sum((give_number_of_points(firstDealerCard, [])))
-    if (firstDealerCardPunctation == 11):
-        if (sumOfPlayerPoints == 21 and len(playerCards) == 2):
-            decisionToInsurance = 'no'
+    if (decisionToDoubleDown.upper() != 'YES'):
+        #player's turn
+        pointsScored = play_black_jack(sumOfPlayerPoints, playerCards, newCardPoints)
+
+        #INSURANCE
+        firstDealerCard = [dealerCards[0]]
+        firstDealerCardPunctation = sum((give_number_of_points(firstDealerCard, [])))
+        if (firstDealerCardPunctation == 11):
+            if (sumOfPlayerPoints == 21 and len(playerCards) == 2):
+                decisionToInsurance = 'no'
+            else:
+                print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
+                decisionToInsurance = input ("If u want to, write: yes: ")
+                if (decisionToInsurance.upper() == 'YES'):
+                    print ('here we took another 1/2 of your bet')   # insurance kaska
         else:
-            print (f"You can take INSURANCE for half of your bet, beacuse the first dealer card is an ACE")
-            decisionToInsurance = input ("If u want to, write: yes: ")
-            if (decisionToInsurance.upper() == 'YES'):
-                print ('here we took another 1/2 of your bet')   # insurance kaska
-    else:
-        decisionToInsurance = 'no'
+            decisionToInsurance = 'no'
 
-    #dealer's turn when split
-    if (pointsScored <= 21):
-        print('Now let\'s check the dealers cards!')
-    make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
+        #dealer's turn
+        if (pointsScored <= 21):
+            print('Now let\'s check the dealers cards!')
+        make_dealer_move (pointsScored, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
 
-    # INSURANCE  CHECK
-    if (decisionToInsurance.upper() == 'YES'):
-        if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
-            print ('INSURANCE ACTIVE')
+        # INSURANCE  CHECK
+        if (decisionToInsurance.upper() == 'YES'):
+            if (sumOfDealerPoints == 21 and len(dealerCards) == 2):
+                print ('INSURANCE ACTIVE')
+    elif (decisionToDoubleDown.upper() == 'YES'):
+        #player's turn
+        newCard.append(first_deal(cardList))
+        print (f"Your new card is {newCard}")
+        choose_ace_value (newCard)
+        newCardPoints = give_number_of_points(newCard, newCardPoints)
+        newCardPointsToAdd = sum(newCardPoints)  # need int to add to our points
+        playerCards.extend(newCard)
+        sumOfPlayerPoints += newCardPointsToAdd
+        newCardPointsToAdd = []
+        newCardPoints.clear()
+        newCard.clear()
+        print (f"Your number of points is: {sumOfPlayerPoints}")
+        if (sumOfPlayerPoints > 21):
+            print ('You lost! Try next time!')
+        else:
+            print('Now let\'s check the dealers cards!')
+        make_dealer_move (sumOfPlayerPoints, dealerCards, sumOfDealerPoints, newDealersCardPoints, playerCards)
 
 
 #BET RESULTS
 
-betResult = sum (betForGame)
-money += betResult
-print (f"""After the game your current account is:
+if (decisionToDoubleDown.upper() == 'YES'):
+    betResult =  2 * sum (betForGame)
+    money += betResult
+    print (f"""After the game your current account is:
 
-{money} dolars
+    {money} dolars
 
-""")
+    """)
+
+else:
+    betResult = sum (betForGame)
+    money += betResult
+    print (f"""After the game your current account is:
+
+    {money} dolars
+
+    """)
