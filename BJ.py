@@ -299,8 +299,6 @@ while True:
     betForGame.append (bet)
 
 
-
-
     shuffle(cardList)
 
     for deal in range (2):
@@ -374,10 +372,8 @@ while True:
     """)
     else:
         decisionToDoubleDown = 'no'
-        
-                
+                   
     # Player GAME
-
 
     if (decisionToSplit.upper() == 'YES'):
         money -= bet
